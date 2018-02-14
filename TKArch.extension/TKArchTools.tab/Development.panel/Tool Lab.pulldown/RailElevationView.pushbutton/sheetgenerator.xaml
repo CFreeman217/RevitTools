@@ -1,0 +1,47 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        ResizeMode="NoResize"  
+        Title="Set Up Sheet Information" Height="260" Width="380" Name="window">
+        <StackPanel Margin="10">
+            <WrapPanel HorizontalAlignment="Center" Margin="5">
+                <TextBlock Name="user_Instructions" Text="Enter Number of Auditoriums:   "/>
+                <TextBox Name="numAud_textbox" Width="75"/>
+            </WrapPanel>
+            <StackPanel Orientation="Horizontal">
+                    <RadioButton Name="std_radiobutton" Content="2 Sheets Per Aud.                      " GroupName="job_type" Margin="5"/>
+                    <RadioButton Name="XD_radiobutton" Content="XD" GroupName="job_type" IsChecked="True" Margin="5"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Name="instruction_Label" Text="Instruction Text"/>
+                <ComboBox Name="XD_combobox" IsEnabled="{Binding IsChecked, ElementName=XD_radiobutton}" Width="75" SelectedValuePath="Content">
+                    <ComboBoxItem Content="dataA" Height="30" Width="75" IsSelected="True"/>
+                    <ComboBoxItem Content="dataB" Height="30" Width="75"/>
+                    <ComboBoxItem Content="datac" Height="30" Width="75"/>
+                </ComboBox>
+
+                <TextBlock Name="instruction_Label2" TextWrapping="Wrap" Text="      Instruction Text 2 " />
+                <ComboBox Name="std_combobox"  IsEnabled="{Binding IsChecked, ElementName=std_radiobutton}" Width="75" SelectedValuePath="Content">
+                    <ComboBoxItem Content="data1" Height="30" Width="75"/>
+                    <ComboBoxItem Content="data2" Height="30" Width="75" IsSelected="True"/>
+                    <ComboBoxItem Content="data3" Height="30" Width="75"/>
+                    <ComboBoxItem Content="data4" Height="30" Width="75"/>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Margin="10" Orientation="Horizontal">
+                <CheckBox Name="ckbx1">CheckboxLabel1</CheckBox>
+                <TextBlock Text="     "/>
+                <CheckBox Name="ckbx2">CheckboxLabel2</CheckBox>
+            </StackPanel>
+            <StackPanel Margin="10" Orientation="Horizontal">
+                <RadioButton Name="radioButton1" GroupName="Group2" IsChecked="True">RadioContent1</RadioButton>
+                <TextBlock Text="     "/>
+                <RadioButton Name="radioButton2" GroupName="Group2">RadioContent2</RadioButton>
+            </StackPanel>            
+            <StackPanel Margin="10" Orientation="Horizontal">
+                <TextBlock Name="TDL_Label"  Text="Total Developed Length :   " />
+                <TextBox Name="TDL_textBox" Width="75"/>
+                <TextBlock Name="Spacing"  Text="      " />
+                <Button Name="sizeSystem_Button" HorizontalAlignment="Right" Content=" Generate Sheets " Click="sheet_gen_btn" IsCancel="True" IsEnabled="{Binding ElementName=numAud_textbox, Path=Text.Length}"/>
+            </StackPanel>
+        </StackPanel>
+</Window>
