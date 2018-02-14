@@ -38,7 +38,7 @@ viewports = DB.FilteredElementCollector(doc)\
 
 for view in viewports:
     params = view.Parameters
-    print(DB.BuiltInParameter.SHEET_NUMBER)
+    print(DB.BuiltInParameter.SHEET_NUMBER.toString())
     # for parameter in params:
     #     if parameter.Definition.Name == 'Sheet Number':
     #         if parameter.HasValue
