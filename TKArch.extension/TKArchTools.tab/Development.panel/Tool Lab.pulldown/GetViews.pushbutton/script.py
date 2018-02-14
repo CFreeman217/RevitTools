@@ -61,7 +61,7 @@ def get_railtype_in_view(param_name):
     #                                         filter_rule, \
     #                                         param_name, \
     #                                         case_sensitive)
-        param_filter = DB.FilterStringRule(param_prov, \
+    param_filter = DB.FilterStringRule(param_prov, \
                                             filter_rule, \
                                             param_name, \
                                             case_sensitive)
