@@ -37,47 +37,63 @@ viewports = DB.FilteredElementCollector(doc)\
             .ToElements()
 
 for view in viewports:
-    params = view.Parameters
-    print(DB.BuiltInParameter.SHEET_NUMBER.toString())
-    # for parameter in params:
-    #     if parameter.Definition.Name == 'Sheet Number':
-    #         if parameter.HasValue
 
-def get_railtype_in_view(param_name):
-    # Accesses the ID associated with the built-in paramater 
-    # See RevitApiDocs: BuiltInParameter Enumeration
-    param_id = DB.ElementId(DB.BuiltInParameter.SHEET_NUMBER)
-    # The filter needs the ID of the parameter we are searching for:
-    # See RevitApiDocs: FilterableValueProvider Class
-    param_prov = DB.ParameterValueProvider(param_id)
-    # The filter also takes a rule evaluation
-    # See RevitApiDocs: FilterStringRuleEvaluator Look at the inheritance Heirarchy
-    # to get an idea of what options this has.
-    filter_rule = DB.FilterStringContains()
-    # This curve directly translates from the C# example provided in the documentation
-    # to the python equivalent. See RevitApiDocs: ElementParameterFilter Class
-    case_sensitive = False
-    # param_filter = DB.FilterStringRule(param_prov, \
-    #                                         filter_rule, \
-    #                                         param_name, \
-    #                                         case_sensitive)
-    param_filter = DB.FilterStringRule(param_prov, \
-                                            filter_rule, \
-                                            param_name, \
-                                            case_sensitive)
+    if view.Id.ToString() == '1827765':
+        location = view.GetBoxOutline()
+        print('\nViewPort with Element ID :{}\n'.format(view.Id))
+        max_x = location.MaximumPoint.X
+        min_x = location.MinimumPoint.X
+        max_y = location.MaximumPoint.Y
+        min_y = location.MinimumPoint.Y
+        dx = max_x - min_x
+        center_x = min_x + (dx/2)
+        dy = max_y - min_y
+        center_y = min_y + (dy/2)
+        area = dy * dx
+        print('Viewport Area = {}'.format(area))
+        print('Center Coordinates  ({} , {})'.format(center_x, center_y))
+        print('Lower Right Coordinates  ({} , {})'.format(max_x, min_y))
+        params = view.Parameters
+        for parameter in params:
+            if parameter.Definition.Name == 'Sheet Number' and parameter.HasValue:
+                print(parameter.AsString)
 
-    # Assigns our filter to the element parameter filter so it fits into the 
-    # 'WherePasses' method
-    element_filter = DB.ElementParameterFilter(param_filter)
-    # Collect a list of items eligible to get picked by the filter.
-    # I found OST_PipeCurves from a combination of looking over the built in categories and
-    collected_elements = DB.FilteredElementCollector(doc) \
-            .OfCategory(DB.BuiltInCategory.OST_RailingHandRail) \
-            .WherePasses(element_filter) \
-            .ToElements()
+            
+# def get_railtype_in_view(param_name):
+#     # Accesses the ID associated with the built-in paramater 
+#     # See RevitApiDocs: BuiltInParameter Enumeration
+#     param_id = DB.ElementId(DB.BuiltInParameter.SHEET_NUMBER)
+#     # The filter needs the ID of the parameter we are searching for:
+#     # See RevitApiDocs: FilterableValueProvider Class
+#     param_prov = DB.ParameterValueProvider(param_id)
+#     # The filter also takes a rule evaluation
+#     # See RevitApiDocs: FilterStringRuleEvaluator Look at the inheritance Heirarchy
+#     # to get an idea of what options this has.
+#     filter_rule = DB.FilterStringContains()
+#     # This curve directly translates from the C# example provided in the documentation
+#     # to the python equivalent. See RevitApiDocs: ElementParameterFilter Class
+#     case_sensitive = False
+#     # param_filter = DB.FilterStringRule(param_prov, \
+#     #                                         filter_rule, \
+#     #                                         param_name, \
+#     #                                         case_sensitive)
+#     param_filter = DB.FilterStringRule(param_prov, \
+#                                             filter_rule, \
+#                                             param_name, \
+#                                             case_sensitive)
 
-    return collected_elements
-collector = DB.FilteredElementCollector(doc)\
-            .OfCategory(DB.BuiltInCategory.OST_RailingTopRail) \
-            .WhereElementIsNotElementType() \
-            .ToElements()
+#     # Assigns our filter to the element parameter filter so it fits into the 
+#     # 'WherePasses' method
+#     element_filter = DB.ElementParameterFilter(param_filter)
+#     # Collect a list of items eligible to get picked by the filter.
+#     # I found OST_PipeCurves from a combination of looking over the built in categories and
+#     collected_elements = DB.FilteredElementCollector(doc) \
+#             .OfCategory(DB.BuiltInCategory.OST_RailingHandRail) \
+#             .WherePasses(element_filter) \
+#             .ToElements()
+
+#     return collected_elements
+# collector = DB.FilteredElementCollector(doc)\
+#             .OfCategory(DB.BuiltInCategory.OST_RailingTopRail) \
+#             .WhereElementIsNotElementType() \
+#             .ToElements()
