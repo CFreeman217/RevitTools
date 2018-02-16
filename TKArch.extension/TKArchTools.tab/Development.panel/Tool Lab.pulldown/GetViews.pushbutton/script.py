@@ -1,5 +1,6 @@
 import clr # Adds .NET library functionality
 import sys # System functions to interact with the interpreeter
+import string
 import collections # Useful tools for generating and accessing groups of elements
 import Autodesk 
 import Autodesk.Revit.DB as DB # Allows access to the DB namespace. Lots of tools.
@@ -31,69 +32,33 @@ app = __revit__.Application
 doc = __revit__.ActiveUIDocument.Document
 uidoc = __revit__.ActiveUIDocument
 
-viewport_dict = {}
 viewports = DB.FilteredElementCollector(doc)\
             .OfCategory(DB.BuiltInCategory.OST_Viewports)\
             .ToElements()
 
+# titleblocks = DB.FilteredElementCollector(doc)\
+#                 .OfCategory()
+
+def set_detail_number(view, label):
+    t = DB.Transaction(doc,'set_detail')
+    t.Start()
+    detail_number = view.get_Parameter(DB.BuiltInParameter.VIEWPORT_DETAIL_NUMBER)
+    detail_number.Set('{}'.format(label))
+    t.Commit()
+
 for view in viewports:
-
-    if view.Id.ToString() == '1827765':
-        location = view.GetBoxOutline()
-        print('\nViewPort with Element ID :{}\n'.format(view.Id))
-        max_x = location.MaximumPoint.X
-        min_x = location.MinimumPoint.X
-        max_y = location.MaximumPoint.Y
-        min_y = location.MinimumPoint.Y
-        dx = max_x - min_x
-        center_x = min_x + (dx/2)
-        dy = max_y - min_y
-        center_y = min_y + (dy/2)
-        area = dy * dx
-        print('Viewport Area = {}'.format(area))
-        print('Center Coordinates  ({} , {})'.format(center_x, center_y))
-        print('Lower Right Coordinates  ({} , {})'.format(max_x, min_y))
-        params = view.Parameters
-        for parameter in params:
-            if parameter.Definition.Name == 'Sheet Number' and parameter.HasValue:
-                print(parameter.AsString)
-
-            
-# def get_railtype_in_view(param_name):
-#     # Accesses the ID associated with the built-in paramater 
-#     # See RevitApiDocs: BuiltInParameter Enumeration
-#     param_id = DB.ElementId(DB.BuiltInParameter.SHEET_NUMBER)
-#     # The filter needs the ID of the parameter we are searching for:
-#     # See RevitApiDocs: FilterableValueProvider Class
-#     param_prov = DB.ParameterValueProvider(param_id)
-#     # The filter also takes a rule evaluation
-#     # See RevitApiDocs: FilterStringRuleEvaluator Look at the inheritance Heirarchy
-#     # to get an idea of what options this has.
-#     filter_rule = DB.FilterStringContains()
-#     # This curve directly translates from the C# example provided in the documentation
-#     # to the python equivalent. See RevitApiDocs: ElementParameterFilter Class
-#     case_sensitive = False
-#     # param_filter = DB.FilterStringRule(param_prov, \
-#     #                                         filter_rule, \
-#     #                                         param_name, \
-#     #                                         case_sensitive)
-#     param_filter = DB.FilterStringRule(param_prov, \
-#                                             filter_rule, \
-#                                             param_name, \
-#                                             case_sensitive)
-
-#     # Assigns our filter to the element parameter filter so it fits into the 
-#     # 'WherePasses' method
-#     element_filter = DB.ElementParameterFilter(param_filter)
-#     # Collect a list of items eligible to get picked by the filter.
-#     # I found OST_PipeCurves from a combination of looking over the built in categories and
-#     collected_elements = DB.FilteredElementCollector(doc) \
-#             .OfCategory(DB.BuiltInCategory.OST_RailingHandRail) \
-#             .WherePasses(element_filter) \
-#             .ToElements()
-
-#     return collected_elements
-# collector = DB.FilteredElementCollector(doc)\
-#             .OfCategory(DB.BuiltInCategory.OST_RailingTopRail) \
-#             .WhereElementIsNotElementType() \
-#             .ToElements()
+    label_location = view.GetLabelOutline()
+    print('\nViewPort with Element ID :{}\n'.format(view.Id))
+    # print('Associated ViewId : {}'.format(view.ViewId))
+    # print('Associated SheetId : {}'.format(view.SheetId))
+    max_x = label_location.MaximumPoint.X * 12
+    min_x = label_location.MinimumPoint.X * 12
+    max_y = label_location.MaximumPoint.Y * 12
+    min_y = label_location.MinimumPoint.Y * 12
+    left_right = lambda x : int((x+.8)/2)
+    x_label = left_right(min_x)
+    up_down = dict(enumerate(string.ascii_uppercase,0))
+    y_label = up_down[int((min_y - 1)/2)]
+    new_detail_label = '{}{}'.format(y_label,x_label)
+    print('Label Lower Left Coordinates (inches) : ({} , {})'.format(min_x, min_y))
+    print('New Detail Number : {}'.format(new_detail_label))
