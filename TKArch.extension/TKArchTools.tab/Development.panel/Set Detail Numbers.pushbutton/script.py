@@ -46,19 +46,22 @@ def set_detail_number(view, label):
     t.Commit()
 
 for view in viewports:
-    label_location = view.GetLabelOutline()
-    print('\nViewPort with Element ID :{}\n'.format(view.Id))
-    # print('Associated ViewId : {}'.format(view.ViewId))
-    # print('Associated SheetId : {}'.format(view.SheetId))
-    max_x = label_location.MaximumPoint.X * 12
-    min_x = label_location.MinimumPoint.X * 12
-    max_y = label_location.MaximumPoint.Y * 12
-    min_y = label_location.MinimumPoint.Y * 12
-    left_right = lambda x : int((x+.8)/2)
-    x_label = left_right(min_x)
-    up_down = dict(enumerate(string.ascii_uppercase,0))
-    y_label = up_down[int((min_y - 1)/2)]
-    new_detail_label = '{}{}'.format(y_label,x_label)
-    print('Label Lower Left Coordinates (inches) : ({} , {})'.format(min_x, min_y))
-    print('New Detail Number : {}'.format(new_detail_label))
-    set_detail_number(view, new_detail_label)
+    try:
+        label_location = view.GetLabelOutline()
+        print('\nViewPort with Element ID :{}\n'.format(view.Id))
+        # print('Associated ViewId : {}'.format(view.ViewId))
+        # print('Associated SheetId : {}'.format(view.SheetId))
+        max_x = label_location.MaximumPoint.X * 12
+        min_x = label_location.MinimumPoint.X * 12
+        max_y = label_location.MaximumPoint.Y * 12
+        min_y = label_location.MinimumPoint.Y * 12
+        left_right = lambda x : int((x+.8)/2)
+        x_label = left_right(min_x)
+        up_down = dict(enumerate(string.ascii_uppercase,0))
+        y_label = up_down[int((min_y - 1)/2)]
+        new_detail_label = '{}{}'.format(y_label,x_label)
+        print('Label Lower Left Coordinates (inches) : ({} , {})'.format(min_x, min_y))
+        print('New Detail Number : {}'.format(new_detail_label))
+        set_detail_number(view, new_detail_label)
+    except:
+        print('\n~~Detail view detected that does not have a label. Ignoring this case.~~\n')
