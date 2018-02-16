@@ -11,8 +11,7 @@ clr.AddReference("RevitServices")
 from RevitServices.Persistence import DocumentManager
 from RevitServices.Transactions import TransactionManager
 
-# I don't think these are nessecary since this script has its own UI window setup
-#   but the program works right now and I don't want to risk it.
+
 clr.AddReference("RevitAPI")
 clr.AddReference("RevitAPIUI")
 
@@ -32,7 +31,7 @@ app = __revit__.Application
 doc = __revit__.ActiveUIDocument.Document
 uidoc = __revit__.ActiveUIDocument
 
-viewports = DB.FilteredElementCollector(doc)\
+viewports = DB.FilteredElementCollector(doc, doc.ActiveView.Id)\
             .OfCategory(DB.BuiltInCategory.OST_Viewports)\
             .ToElements()
 
@@ -62,3 +61,4 @@ for view in viewports:
     new_detail_label = '{}{}'.format(y_label,x_label)
     print('Label Lower Left Coordinates (inches) : ({} , {})'.format(min_x, min_y))
     print('New Detail Number : {}'.format(new_detail_label))
+    set_detail_number(view, new_detail_label)
