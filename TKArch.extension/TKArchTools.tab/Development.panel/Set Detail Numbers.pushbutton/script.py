@@ -1,3 +1,20 @@
+'''
+TO DO:
+
+Detect grid lines
+User Interface for setting up sheet grid
+    Axis labels
+    Start Location
+    Spacing
+    Which sheets to apply
+Update elevation in schedules
+Two labels in the same grid location - append 'a', 'b', etc.
+Label outside title block - name becomes XX
+
+Commit all changes in a single transaction for speed and 
+to adjust for multiples/outside bounds.
+'''
+
 import clr # Adds .NET library functionality
 import sys # System functions to interact with the interpreeter
 import string
