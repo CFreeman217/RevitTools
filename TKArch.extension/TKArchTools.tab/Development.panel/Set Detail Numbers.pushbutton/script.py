@@ -21,10 +21,10 @@ from Autodesk.DesignScript.Geometry import *
 
 # Gets nessecary resources for generating the user input window triggered on tool
 #   click.
-clr.AddReference("PresentationFramework")
-from scriptutils.userinput import WPFWindow
-from System.Windows import Window, Application
-from System.Windows.Controls import TextBox
+# clr.AddReference("PresentationFramework")
+# from scriptutils.userinput import WPFWindow
+# from System.Windows import Window, Application
+# from System.Windows.Controls import TextBox
 
 # Generate references for the active window and application.
 app = __revit__.Application
