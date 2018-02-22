@@ -11,7 +11,7 @@ Update elevation in schedules
 Two labels in the same grid location - append 'a', 'b', etc.
 Label outside title block - name becomes XX
 
-Commit all changes in a single transaction for speed and 
+Commit all changes in a single transaction for speed and
 to adjust for multiples/outside bounds.
 '''
 
@@ -19,7 +19,7 @@ import clr # Adds .NET library functionality
 import sys # System functions to interact with the interpreeter
 import string
 import collections # Useful tools for generating and accessing groups of elements
-import Autodesk 
+import Autodesk
 import Autodesk.Revit.DB as DB # Allows access to the DB namespace. Lots of tools.
     # See revitapidocs.com
 
